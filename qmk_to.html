@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>QMK Layout to Table</title>
+    <script>
+        const QMK_LAYOUT = `
+            const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+
+            [Layer_main] = LAYOUT_30(
+                LT(Layer_fkeys,KC_Q),   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   KC_P,
+                KC_A,                   KC_S,                   KC_D,                   KC_F,                   LT(Layer_nums,KC_G),    KC_H,                       KC_J,                   KC_K,           KC_L,                   LSFT_T(KC_ENTER),
+                LCTL_T(KC_Z),           LALT_T(KC_X),           LCG_T(KC_C),            LSG_T(KC_V),            LGUI_T(KC_B),           LT(Layer_symbols,KC_SPACE), KC_N,                   KC_M,           LCSG_T(KC_DOT),         HYPR_T(KC_SLASH)
+                ),
+
+            [Layer_symbols] = LAYOUT_30(
+                KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       KC_LABK,                    KC_PLUS,                KC_MINUS,       KC_RABK,                KC_EQUAL,
+                KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                KC_ASTR,                    KC_LBRACKET,            KC_RBRACKET,    KC_UNDS,                KC_QUES,
+                KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    KC_ASTR,                _______,                    LSFT(KC_SCOLON),        KC_SCOLON,      KC_COMM,                KC_NONUS_BSLASH
+                ),
+
+            [Layer_nums] = LAYOUT_30(
+                KC_1,                   KC_2,                   KC_3,                   KC_4,                   KC_5,                   KC_6,                       KC_7,                   KC_8,           KC_9,                   KC_0,
+                DYN_REC_START1,         DYN_REC_START2,         DYN_REC_STOP,           _______,                _______,                KC_LEFT,                    KC_DOWN,                KC_UP,          KC_RIGHT,               KC_PSCREEN,
+                DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                _______,                    _______,                _______,        KC_DELETE,              KC_ESC
+                ),
+
+            [Layer_fkeys] = LAYOUT_30(
+                _______,                KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  KC_F10,
+                KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 RGB_VAI,                RGB_SAI,                    RGB_HUI,           RGB_MODE_REVERSE,    KC_F19,                 KC_F1,
+                KC_LEAD,                KC_F22,                 KC_F23,                 RGB_MODE_SNAKE,         RGB_VAD,                RGB_SAD,                    RGB_HUD,           RGB_MODE_FORWARD,    RGB_TOG,                KC_F20
+                ),
+            };
+        `;
+
+        window.onload = function(){
+            let cleaned = [];
+            let qmkLayout = QMK_LAYOUT.split('\n');
+            for(let i = 0; i < qmkLayout.length; i++){
+                if(qmkLayout[i].trim() != ''){
+                    if(!qmkLayout[i].includes("const uint16_t PROGMEM")){
+                        cleaned.push(qmkLayout[i].trim());
+                    }
+                }
+            }
+            let currentLayerName = '';
+            let currentLayerKeysRows = [];
+
+            let layers = [];
+
+            for(let i = 0; i < cleaned.length; i++){
+                if(cleaned[i].includes("[")){
+                    const name = cleaned[i].split('[')[1].split(']')[0];
+                    currentLayerName = name;
+                }else if(cleaned[i] === "),"){
+                    layers.push({
+                        name: currentLayerName,
+                        keys: currentLayerKeysRows
+                    });
+                    currentLayerKeysRows = [];
+                }else{
+                    const keys = cleaned[i].split(', ');
+                    let keysCleaned = [];
+                    for(let j = 0; j < keys.length; j++){
+                        if(keys[j].trim() != ''){
+                            if(keys[j].trim()[keys[j].trim().length - 1] === ','){
+                                keysCleaned.push(keys[j].trim().substring(0, keys[j].trim().length - 1));
+                            }else{
+                                keysCleaned.push(keys[j].trim());
+                            }
+                        }
+                    }
+                    currentLayerKeysRows.push(keysCleaned);
+                }
+            }
+
+            const tableContainer = document.createElement('div');
+            tableContainer.classList.add('mainTableContainer');
+            document.body.appendChild(tableContainer); 
+            
+            const table = document.createElement('table');
+            table.classList.add('mainTable');
+            tableContainer.appendChild(table);
+
+            const numCols = layers[0].keys[0].length;
+
+            for(let i = 0; i < layers.length; i++){
+                const layer = layers[i];
+
+                const headerRow = document.createElement('tr');
+                const headerCell = document.createElement('td');
+                headerCell.innerText = layer.name.replace('Layer_', 'L_');
+                headerCell.colSpan = numCols;
+                headerCell.classList.add('layerName');
+                headerRow.appendChild(headerCell);
+                table.appendChild(headerRow);
+
+                const layerKeys = layer.keys;
+                for(let j = 0; j < layerKeys.length; j++){
+                    const row = layerKeys[j];
+                    const tr = document.createElement('tr');
+                    for(let k = 0; k < row.length; k++){
+                        const td = document.createElement('td');
+                        td.innerText = row[k] === '_______' ? '' : row[k].replace('KC_', '').replace('Layer_', 'L_');
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --pageBG: #fff;
+            --text: #1c76ff;
+        }
+        .mainTable, .mainTable td{
+            border-collapse: collapse;
+            border: 1px solid var(--text);
+            text-align: center;
+            font-family: monospace;
+            color: var(--text);
+        }
+        .mainTable td{
+            min-width: 150px;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        .mainTableContainer{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .layerName{
+            padding: 10px;
+            border-top: 1px solid var(--pageBG) !important;
+            border-left: 1px solid var(--pageBG) !important;
+            border-right: 1px solid var(--pageBG) !important;
+            font-size: 120%;
+        }
+        body{
+            width: 100vw;
+            height: 100vh;
+            padding: 0px;
+            margin: 0px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--pageBG);
+        }
+    </style>
+</head>
+<body>
+</body>
+</html>
