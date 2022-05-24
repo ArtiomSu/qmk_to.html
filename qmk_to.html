@@ -4,36 +4,125 @@
     <meta charset="utf-8">
     <title>QMK Layout to Table</title>
     <script>
-        const QMK_LAYOUT = `
-            const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
+        // print landscape with scale 58 on chrome
+        let QMK_LAYOUT = "";
+        const QMK_LAYOUT2 = `
+const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
-            [Layer_main] = LAYOUT_30(
-                LT(Layer_fkeys,KC_Q),   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   KC_P,
-                KC_A,                   KC_S,                   KC_D,                   KC_F,                   LT(Layer_nums,KC_G),    KC_H,                       KC_J,                   KC_K,           KC_L,                   LSFT_T(KC_ENTER),
-                LCTL_T(KC_Z),           LALT_T(KC_X),           LCG_T(KC_C),            LSG_T(KC_V),            LGUI_T(KC_B),           LT(Layer_symbols,KC_SPACE), KC_N,                   KC_M,           LCSG_T(KC_DOT),         HYPR_T(KC_SLASH)
-                ),
+  [Layer_main] = LAYOUT_30(
+    LT(Layer_fkeys,KC_Q),   KC_W,                   KC_E,                   KC_R,                   KC_T,                   KC_Y,                       KC_U,                   KC_I,           KC_O,                   KC_P,
+    KC_A,                   KC_S,                   KC_D,                   KC_F,                   LT(Layer_nums,KC_G),    KC_H,                       KC_J,                   KC_K,           KC_L,                   LSFT_T(KC_ENTER),
+    LCTL_T(KC_Z),           LALT_T(KC_X),           LCG_T(KC_C),            LSG_T(KC_V),            LGUI_T(KC_B),           LT(Layer_symbols,KC_SPACE), KC_N,                   KC_M,           LCSG_T(KC_DOT),         HYPR_T(KC_SLASH)
+    ),
 
-            [Layer_symbols] = LAYOUT_30(
-                KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       KC_LABK,                    KC_PLUS,                KC_MINUS,       KC_RABK,                KC_EQUAL,
-                KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                KC_ASTR,                    KC_LBRACKET,            KC_RBRACKET,    KC_UNDS,                KC_QUES,
-                KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    KC_ASTR,                _______,                    LSFT(KC_SCOLON),        KC_SCOLON,      KC_COMM,                KC_NONUS_BSLASH
-                ),
+  [Layer_symbols] = LAYOUT_30(
+    KC_GRAVE,               KC_QUOTE,               LSFT(KC_QUOTE),         LSFT(LCTL(KC_C)),       LSFT(LCTL(KC_V)),       KC_LABK,                    KC_PLUS,                KC_MINUS,       KC_RABK,                KC_EQUAL,
+    KC_EXLM,                LSFT(KC_2),             LSFT(KC_3),             KC_DLR,                 KC_PERC,                KC_ASTR,                    KC_LBRACKET,            KC_RBRACKET,    KC_UNDS,                KC_QUES,
+    KC_LSHIFT,              KC_AMPR,                LSFT(KC_NONUS_BSLASH),  LSFT(KC_NONUS_HASH),    KC_ASTR,                _______,                    LSFT(KC_SCOLON),        KC_SCOLON,      KC_COMM,                KC_NONUS_BSLASH
+    ),
 
-            [Layer_nums] = LAYOUT_30(
-                KC_1,                   KC_2,                   KC_3,                   KC_4,                   KC_5,                   KC_6,                       KC_7,                   KC_8,           KC_9,                   KC_0,
-                DYN_REC_START1,         DYN_REC_START2,         DYN_REC_STOP,           _______,                _______,                KC_LEFT,                    KC_DOWN,                KC_UP,          KC_RIGHT,               KC_PSCREEN,
-                DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        _______,                _______,                _______,                _______,                    _______,                _______,        KC_DELETE,              KC_ESC
-                ),
+  [Layer_nums] = LAYOUT_30(
+    KC_1,                   KC_2,                   KC_3,                   KC_4,                   KC_5,                   KC_6,                       KC_7,                   KC_8,           KC_9,                   KC_0,
+    DYN_REC_START1,         DYN_REC_START2,         DYN_REC_STOP,           KC_MS_WH_UP,            _______,                KC_MS_LEFT,                 KC_MS_DOWN,             KC_MS_UP,       KC_MS_RIGHT,            KC_PSCREEN,
+    DYN_MACRO_PLAY1,        DYN_MACRO_PLAY2,        KC_MS_BTN4,             KC_MS_WH_DOWN,          KC_MS_BTN4,             KC_MS_BTN3,                 KC_MS_BTN1,             KC_MS_BTN2,     KC_DELETE,              KC_ESC
+    ),
 
-            [Layer_fkeys] = LAYOUT_30(
-                _______,                KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  KC_F10,
-                KC_F11,                 KC_F12,                 KC_F13,                 KC_F14,                 RGB_VAI,                RGB_SAI,                    RGB_HUI,           RGB_MODE_REVERSE,    KC_F19,                 KC_F1,
-                KC_LEAD,                KC_F22,                 KC_F23,                 RGB_MODE_SNAKE,         RGB_VAD,                RGB_SAD,                    RGB_HUD,           RGB_MODE_FORWARD,    RGB_TOG,                KC_F20
-                ),
-            };
+  [Layer_fkeys] = LAYOUT_30(
+    _______,                KC_F2,                  KC_F3,                  KC_F4,                  KC_F5,                  KC_F6,                      KC_F7,                  KC_F8,          KC_F9,                  KC_F10,
+    KC_F11,                 KC_F12,                 RGB_VAI,                RGB_SAI,                RGB_HUI,                KC_LEFT,                    KC_DOWN,                KC_UP,          KC_RIGHT,               KC_F1,
+    KC_LEAD,                RGB_MODE_SNAKE,         RGB_VAD,                RGB_SAD,                RGB_HUD,                _______,                    _______,           RGB_MODE_REVERSE,    RGB_MODE_FORWARD,       RGB_TOG
+    ),
         `;
 
         window.onload = function(){
+            const text = document.getElementById("inputTextArea");
+            const useDarkModeByDefault = true;
+
+            text.value = QMK_LAYOUT2;
+            QMK_LAYOUT = QMK_LAYOUT2;
+            parseText();
+
+            const button = document.getElementById("printButton");
+
+            button.addEventListener("click", function(){
+                QMK_LAYOUT = text.value;
+                try{
+                    removeTable();
+                    parseText();
+                    document.documentElement.style.setProperty('--pageBG', getComputedStyle(r).getPropertyValue('--lightThemeBG'));
+                    document.documentElement.style.setProperty('--pageText', getComputedStyle(r).getPropertyValue('--lightThemeText'));
+                    darkModeCheckBox.checked = false;
+                    window.print();
+                }catch(e){
+                    alert("Invalid QMK Layout");
+                }
+            });
+
+            const buttonClear = document.getElementById("clearButton");
+
+            buttonClear.addEventListener("click", function(){
+                text.value = "";
+                removeTable();
+            });
+
+            text.addEventListener("input", function(){
+                QMK_LAYOUT = text.value;
+                try{
+                    removeTable();
+                    parseText();
+                }catch(e){
+                }
+            });
+
+            let r = document.querySelector(':root');
+
+            const colorPicker1 = document.getElementById("colorPicker1");
+            colorPicker1.addEventListener("click", function(){
+                document.documentElement.style.setProperty('--text', getComputedStyle(r).getPropertyValue('--colorPicker1'));
+            });
+            const colorPicker2 = document.getElementById("colorPicker2");
+            colorPicker2.addEventListener("click", function(){
+                document.documentElement.style.setProperty('--text', getComputedStyle(r).getPropertyValue('--colorPicker2'));
+            });
+            const colorPicker3 = document.getElementById("colorPicker3");
+            colorPicker3.addEventListener("click", function(){
+                document.documentElement.style.setProperty('--text', getComputedStyle(r).getPropertyValue('--colorPicker3'));
+            });
+            const colorPicker4 = document.getElementById("colorPicker4");
+            colorPicker4.addEventListener("click", function(){
+                document.documentElement.style.setProperty('--text', getComputedStyle(r).getPropertyValue('--colorPicker4'));
+            });
+            const colorPicker5 = document.getElementById("colorPicker1");
+            colorPicker5.addEventListener("click", function(){
+                document.documentElement.style.setProperty('--text', getComputedStyle(r).getPropertyValue('--colorPicker5'));
+            });
+
+            const darkModeCheckBox = document.getElementById("darkModeCheckBox");
+            darkModeCheckBox.addEventListener("click", function(){
+                if(darkModeCheckBox.checked){
+                    document.documentElement.style.setProperty('--pageBG', getComputedStyle(r).getPropertyValue('--darkThemeBG'));
+                    document.documentElement.style.setProperty('--pageText', getComputedStyle(r).getPropertyValue('--darkThemeText'));
+                }else{
+                    document.documentElement.style.setProperty('--pageBG', getComputedStyle(r).getPropertyValue('--lightThemeBG'));
+                    document.documentElement.style.setProperty('--pageText', getComputedStyle(r).getPropertyValue('--lightThemeText'));
+                }
+            });
+
+            if(useDarkModeByDefault){
+                darkModeCheckBox.checked = true;
+                document.documentElement.style.setProperty('--pageBG', getComputedStyle(r).getPropertyValue('--darkThemeBG'));
+                document.documentElement.style.setProperty('--pageText', getComputedStyle(r).getPropertyValue('--darkThemeText'));
+            }
+        }
+
+        const removeTable = () =>{
+            const mainTableContainer = document.getElementsByClassName("mainTableContainer")[0];
+            if(mainTableContainer){
+                mainTableContainer.parentNode.removeChild(mainTableContainer);
+            }
+        }
+
+        const parseText = () =>{
             let cleaned = [];
             let qmkLayout = QMK_LAYOUT.split('\n');
             for(let i = 0; i < qmkLayout.length; i++){
@@ -107,12 +196,23 @@
                     table.appendChild(tr);
                 }
             }
+
         }
     </script>
     <style>
         :root {
             --pageBG: #fff;
+            --pageText: rgb(39, 39, 39);
             --text: #1c76ff;
+            --colorPicker1: #1c76ff;
+            --colorPicker2: #ff1c1c;
+            --colorPicker3: #d21cff;
+            --colorPicker4: #ff8a1c;
+            --colorPicker5: #1cff73;
+            --lightThemeText: rgb(39, 39, 39);
+            --lightThemeBG: #ffffff;
+            --darkThemeText: #d3d3d3;
+            --darkThemeBG: rgb(39, 39, 39);
         }
         .mainTable, .mainTable td{
             border-collapse: collapse;
@@ -145,13 +245,205 @@
             padding: 0px;
             margin: 0px;
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: var(--pageBG);
+            color: var(--pageText);
+        }
+        .interactionContainer{
+            font: 14px monospace;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin: 0px;
+            padding: 0px;
+        }
+        h3{
+            margin:0px;
+            margin-bottom: 2em;
+        }
+        h1{
+            margin-bottom: 1em;
+        }
+        textarea{
+            width: 90%;
+            border: 1px solid var(--text);
+            padding: 1em;
+            font-family: monospace;
+            font-size: 120%;
+            border-radius: 0.5em;
+            resize: none;
+            background-color: var(--pageBG);
+            color: var(--pageText);
+        }
+        textarea::-webkit-scrollbar{
+            display: none;
+        }
+        button{
+            background-color: var(--text);
+            color: var(--pageBG);
+            border: 1px solid var(--text);
+            padding: 10px;
+            font-size: 120%;
+            margin-top: 1em;
+            border-radius: 0.5em;
+            transition: color 0.2s, background-color 0.2s;
+        }
+        button:hover{
+            cursor: pointer;
+            background-color: var(--pageBG);
+            color: var(--text);
+        }
+        .buttons{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .colorPickerContainer{
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: space-between;
+            width: calc(90% + 2em + 2px);
+            height: 2em;
+            border-radius: 0.5em;
+            margin: 1em;
+        }
+        .colorPicker{
+            width: 19%;
+            height: 100%;
+            border-radius: 0.5em;
+            opacity: 0.8;
+            transition: opacity 0.2s ease-in-out;
+        }
+        .colorPicker:hover{
+            cursor: pointer;
+            opacity: 1;
+        }
+        #colorPicker1{
+            background-color: var(--colorPicker1);
+        }
+        #colorPicker2{
+            background-color: var(--colorPicker2);
+        }
+        #colorPicker3{
+            background-color: var(--colorPicker3);
+        }
+        #colorPicker4{
+            background-color: var(--colorPicker4);
+        }
+        #colorPicker5{
+            background-color: var(--colorPicker5);
+        }
+        .darkModeContainer{
+            display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: center;
-            background-color: var(--pageBG);
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        input:checked + .slider {
+            background-color: var(--text);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--text);
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(26px);
+            -ms-transform: translateX(26px);
+            transform: translateX(26px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 34px;
+        }
+
+        .slider.round:before {
+            border-radius: 50%;
+        }
+        /* hide interactionContainer in print view */
+        @media print {
+            .interactionContainer{
+                display: none;
+            }
+            body{
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="interactionContainer">
+        <h1>QMK to HTML</h1>
+        <h3>By Terminal Heat Sink</h3>
+        <div class="darkModeContainer">
+            <div style="margin-right: 0.5em;">Dark Mode</div>
+            <label class="switch">
+                <input type="checkbox" id="darkModeCheckBox">
+                <span class="slider round"></span>
+            </label>
+        </div>
+        <p>Copy your QMK Layout into the box below and press print. I have provided one of my layouts as an example.</p>
+        <p>When Printing in Chrome Choose Landscape and Scale 58 for best results</p>
+        <textarea id="inputTextArea" rows="10"></textarea>
+        <div class="colorPickerContainer">
+            <div class="colorPicker" id="colorPicker1"></div>
+            <div class="colorPicker" id="colorPicker2"></div>
+            <div class="colorPicker" id="colorPicker3"></div>
+            <div class="colorPicker" id="colorPicker4"></div>
+            <div class="colorPicker" id="colorPicker5"></div>
+        </div>
+        <p>You can choose different colours by clicking on them</p>
+        <div class="buttons">
+            <button id="printButton">Print</button>
+            <div style="width: 1em;"></div>
+            <button id="clearButton">Clear</button>
+        </div>
+
+    </div>
 </body>
 </html>
